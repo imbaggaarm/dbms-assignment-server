@@ -8,22 +8,29 @@ import (
 )
 
 var CreateAccount = func(w http.ResponseWriter, r *http.Request) {
-
-	account := &models.Account{}
+	account := &models.Student{}
 	err := json.NewDecoder(r.Body).Decode(account)
 	if err != nil {
 		u.Respond(w, u.Message(false, "Invalid request"))
 		return
 	}
-	resp := make(map[string]interface{})
-	resp["account"] = "hello"
+
+	resp := account.Create() //Create account
 	u.Respond(w, resp)
 }
 
-var DeleteAccount = func(w http.ResponseWriter, r *http.Request) {
+var Authenticate = func(w http.ResponseWriter, r *http.Request) {
+	account := &models.Student{}
+	err := json.NewDecoder(r.Body).Decode(account)
+	if err != nil {
+		u.Respond(w, u.Message(false, "Invalid request"))
+		return
+	}
 
+	resp := models.Login(account.Email, account.Password)
+	u.Respond(w, resp)
 }
 
-var Authenticate = func(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("login"))
+var Logout = func(w http.ResponseWriter, r *http.Request) {
+
 }

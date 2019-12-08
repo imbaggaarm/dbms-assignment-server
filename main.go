@@ -4,6 +4,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"src/app"
 	"src/controllers"
 )
 func main() {
@@ -16,19 +17,23 @@ func main() {
 	// Configure auth route
 	auth := api.PathPrefix("/auth").Subrouter()
 	auth.HandleFunc("/register", controllers.CreateAccount).Methods(http.MethodPost)
+	auth.HandleFunc("/delete", controllers.DeleteAccount).Methods(http.MethodPost)
 	auth.HandleFunc("/login", controllers.Authenticate).Methods(http.MethodPost)
-
+	auth.HandleFunc("/logout", controllers.Logout).Methods(http.MethodGet)
 	// Configure user
 	api.HandleFunc("/{user_id}", controllers.GetUserProfile).Methods(http.MethodGet)
-	api.HandleFunc("/update_profile/", controllers.UpdateProfile).Methods(http.MethodPost)
+	api.HandleFunc("/update_profile", controllers.UpdateProfile).Methods(http.MethodPost)
+	api.HandleFunc("/{user_id}/courses", controllers.GetUserCourses).Methods(http.MethodGet)
 
 	// Configure courses
 	courses := api.PathPrefix("/courses").Subrouter()
-	courses.HandleFunc("/", controllers.GetCourses).Methods(http.MethodGet)
-	courses.HandleFunc("/{institution_id}", controllers.GetInstitutionCourses).Methods(http.MethodGet)
-	courses.HandleFunc("/{user_id}", controllers.GetUserCourses).Methods(http.MethodGet)
-	courses.HandleFunc("/{courses_id}", controllers.GetCourseDetail).Methods(http.MethodGet)
-	courses.HandleFunc("/{courses_id}/comments", controllers.GetCourseComments).Methods(http.MethodGet)
+	courses.HandleFunc("/list", controllers.GetAllCourses).Methods(http.MethodGet)
+	courses.HandleFunc("/institution/{institution_id}", controllers.GetInstitutionCourses).Methods(http.MethodGet)
+	courses.HandleFunc("/{course_id}", controllers.GetCourse).Methods(http.MethodGet)
+	courses.HandleFunc("/{course_id}/comments", controllers.GetCourseComments).Methods(http.MethodGet)
+
+	r.Use(app.JwtAuthentication) // attach JWT auth middleware
+
 	// Starting server
 	port := os.Getenv("PORT")
 	if port == "" {

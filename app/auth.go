@@ -14,10 +14,12 @@ import (
 var JwtAuthentication = func(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		//prefix
-		api := "/api/v1"
+		api := "/api/v1/"
 		auth := api + "auth/"
-		notAuth := []string{auth+"login", auth+"register"}
+		courses := api + "courses/"
+		notAuth := []string{auth+"login", auth+"register", courses}
 		requestPath := r.URL.Path
+
 		for _, value := range notAuth {
 			if value == requestPath {
 				next.ServeHTTP(w, r)
@@ -26,10 +28,12 @@ var JwtAuthentication = func(next http.Handler) http.Handler {
 		}
 
 		response := make(map[string]interface{})
-		tokenHeader := r.Header.Get("Authorization")
-		if tokenHeader == "" { //Grab the token from header
-			 w.WriteHeader(http.StatusForbidden)
-			 u.Respond(w, response)
+		tokenHeader := r.Header.Get("Authorization") // Grab the token from header
+		if tokenHeader == "" {
+			response = u.Message(false, "Missing auth token")
+			w.WriteHeader(http.StatusForbidden)
+			u.Respond(w, response)
+			return
 		}
 
 		splitted := strings.Split(tokenHeader, " ") //`Bearer {token-body}`
@@ -37,6 +41,7 @@ var JwtAuthentication = func(next http.Handler) http.Handler {
 			response = u.Message(false, "Invalid/Malformed auth token")
 			w.WriteHeader(http.StatusForbidden)
 			u.Respond(w, response)
+			return
 		}
 
 		tokenPart := splitted[1]
@@ -61,6 +66,7 @@ var JwtAuthentication = func(next http.Handler) http.Handler {
 		fmt.Sprintf("User %", tk.UserId)
 		ctx := context.WithValue(r.Context(), "user", tk.UserId)
 		r = r.WithContext(ctx)
+
 		next.ServeHTTP(w, r) //Proceed in the middleware chain!
 	})
 }
