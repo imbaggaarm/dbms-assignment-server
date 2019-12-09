@@ -3,7 +3,7 @@ A backend for DBMS Assignment written in Golang
 
 ## What did I learn from this project
 1. ORM (Object relational mapping) - GORM
-2. Implement database in Golang
+2. Implement database connection in Golang
 3. Project structure
 4. API Middleware for authentication
 5. JWT, Crypto in Golang
