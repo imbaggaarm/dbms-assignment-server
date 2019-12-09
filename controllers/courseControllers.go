@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"github.com/gorilla/mux"
-	"log"
 	"net/http"
 	"src/models"
 	u "src/utils"
@@ -33,7 +32,6 @@ var UnenrollCourse = func(w http.ResponseWriter, r *http.Request) {
 }
 
 var GetCourse = func(w http.ResponseWriter, r *http.Request) {
-	log.Println("Hello")
 	params := mux.Vars(r)
 	idStr := params["course_id"]
 	id, _ := strconv.ParseUint(idStr, 10, 64)
@@ -41,10 +39,6 @@ var GetCourse = func(w http.ResponseWriter, r *http.Request) {
 	resp := u.Message(true, "")
 	resp["data"] = data
 	u.Respond(w, resp)
-}
-
-var GetCourseComments = func(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("course comments"))
 }
 
 var GetUserCourses = func(w http.ResponseWriter, r *http.Request) {

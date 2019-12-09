@@ -24,13 +24,17 @@ func main() {
 	api.HandleFunc("/{user_id}", controllers.GetUserProfile).Methods(http.MethodGet)
 	api.HandleFunc("/update_profile", controllers.UpdateProfile).Methods(http.MethodPost)
 	api.HandleFunc("/{user_id}/courses", controllers.GetUserCourses).Methods(http.MethodGet)
-
 	// Configure courses
 	courses := api.PathPrefix("/courses").Subrouter()
 	courses.HandleFunc("/list", controllers.GetAllCourses).Methods(http.MethodGet)
 	courses.HandleFunc("/institution/{institution_id}", controllers.GetInstitutionCourses).Methods(http.MethodGet)
 	courses.HandleFunc("/{course_id}", controllers.GetCourse).Methods(http.MethodGet)
-	courses.HandleFunc("/{course_id}/comments", controllers.GetCourseComments).Methods(http.MethodGet)
+	courses.HandleFunc("/{course_id}/comments", controllers.GetComments).Methods(http.MethodGet)
+	// Configure comments
+	comments := api.PathPrefix("/comments").Subrouter()
+	comments.HandleFunc("/delete", controllers.DeleteComment).Methods(http.MethodGet)
+	comments.HandleFunc("/create", controllers.CreateComment).Methods(http.MethodPost)
+	comments.HandleFunc("/update", controllers.UpdateComment).Methods(http.MethodPost)
 
 	r.Use(app.JwtAuthentication) // attach JWT auth middleware
 
