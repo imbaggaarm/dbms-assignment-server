@@ -10,4 +10,4 @@ A backend for DBMS Assignment written in Golang
 6. Struct tags in Golang
 7. More understand about go vendor, go module
 8. Environment file in Golang
-9. More understand about import in Golang - (u, ., _) 
+9. More understand about import in Golang - using (u, ., _) 
