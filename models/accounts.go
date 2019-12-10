@@ -13,15 +13,14 @@ type Token struct {
 }
 
 type Student struct {
-	ID uint `json:"id"`
-	FirstName string `json:"first_name"`
-	LastName string `json:"last_name"`
-	Email string `json:"email" gorm:"column:uname"`
-	Password string `json:"password" gorm:"column:pass"`
-	Location string `json:"location"`
-	ImageUrl string `json:"image_url"`
-
-	Token string `json:"token" sql:"-"`
+	ID uint
+	FirstName string
+	LastName string
+	Email string `gorm:"column:uname"`
+	Password string `gorm:"column:pass"`
+	Location string
+	ImageUrl string
+	Token string `sql:"-"`
 }
 
 func (Student) TableName() string {
