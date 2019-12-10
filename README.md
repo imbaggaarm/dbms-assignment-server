@@ -7,7 +7,7 @@ A backend for DBMS Assignment written in Golang
 3. Project structure
 4. API Middleware for authentication
 5. JWT, Crypto in Golang - using jwt-go, bcrypt 
-6. Struct tags in Golang
+6. Struct tags in Golang (multiple tags, omitempty)
 7. More understand about go vendor, go module
 8. Environment file in Golang
 9. More understand about import in Golang - using (u, ., _) 
