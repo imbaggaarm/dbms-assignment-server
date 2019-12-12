@@ -45,7 +45,7 @@ func main() {
 	}
 
  	log.Println("Starting server at :" + port)
-	log.Fatal(http.ListenAndServe(":8000", r))
+	log.Fatal(http.ListenAndServe(":" + port, r))
 }
 
 func HandleIndex(w http.ResponseWriter, r *http.Request) {
