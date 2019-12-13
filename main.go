@@ -1,4 +1,5 @@
 package main
+
 import (
 	"github.com/gorilla/mux"
 	"log"
@@ -7,6 +8,7 @@ import (
 	"src/app"
 	"src/controllers"
 )
+
 func main() {
 	r := mux.NewRouter().StrictSlash(true)
 
@@ -44,8 +46,8 @@ func main() {
 		port = "8000"
 	}
 
- 	log.Println("Starting server at :" + port)
-	log.Fatal(http.ListenAndServe(":" + port, r))
+	log.Println("Starting server at :" + port)
+	log.Fatal(http.ListenAndServe(":"+port, r))
 }
 
 func HandleIndex(w http.ResponseWriter, r *http.Request) {

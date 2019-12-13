@@ -17,7 +17,7 @@ var JwtAuthentication = func(next http.Handler) http.Handler {
 		api := "/api/v1/"
 		auth := api + "auth/"
 		courses := api + "courses/"
-		notAuth := []string{auth+"login", auth+"register", courses}
+		notAuth := []string{auth + "login", auth + "register", courses}
 		requestPath := r.URL.Path
 
 		for _, value := range notAuth {

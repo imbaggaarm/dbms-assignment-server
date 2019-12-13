@@ -65,6 +65,3 @@ var DeleteComment = func(w http.ResponseWriter, r *http.Request) {
 
 	u.Respond(w, resp)
 }
-
-
-

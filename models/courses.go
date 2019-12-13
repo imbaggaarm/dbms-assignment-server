@@ -1,21 +1,21 @@
 package models
 
 type Course struct {
-	ID uint `json:"id"`
-	Name string `json:"name"`
-	ImageURL string `json:"image_url"`
-	Commitment string `json:"commitment"`
-	Description string `json:"description"`
-	SpecializationID uint `json:"specialization_id"`
-	MinGrade float32 `json:"min_grade"`
-	CoursePrice float32 `json:"course_price"`
-	Active int `json:"active"`
+	ID               uint    `json:"id"`
+	Name             string  `json:"name"`
+	ImageURL         string  `json:"image_url"`
+	Commitment       string  `json:"commitment"`
+	Description      string  `json:"description"`
+	SpecializationID uint    `json:"specialization_id"`
+	MinGrade         float32 `json:"min_grade"`
+	CoursePrice      float32 `json:"course_price"`
+	Active           int     `json:"active"`
 }
 
 type OverallCourse struct {
-	ID uint `json:"id"`
-	Name string `json:"name"`
-	ImageURL string `json:"image_url"`
+	ID              uint   `json:"id"`
+	Name            string `json:"name"`
+	ImageURL        string `json:"image_url"`
 	InstitutionName string `json:"institution_name" gorm:"column:ins_name"`
 }
 

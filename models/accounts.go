@@ -1,26 +1,28 @@
 package models
+
 import (
 	"github.com/dgrijalva/jwt-go"
 	"github.com/jinzhu/gorm"
-	u "src/utils"
 	"golang.org/x/crypto/bcrypt"
 	"os"
+	u "src/utils"
 	"strings"
 )
+
 type Token struct {
 	UserId uint
 	jwt.StandardClaims
 }
 
 type Student struct {
-	ID uint
+	ID        uint
 	FirstName string
-	LastName string
-	Email string `gorm:"column:uname"`
-	Password string `gorm:"column:pass"`
-	Location string
-	ImageUrl string
-	Token string `sql:"-"`
+	LastName  string
+	Email     string `gorm:"column:uname"`
+	Password  string `gorm:"column:pass"`
+	Location  string
+	ImageUrl  string
+	Token     string `sql:"-"`
 }
 
 func (Student) TableName() string {
@@ -51,7 +53,7 @@ func (account *Student) Validate() (map[string]interface{}, bool) {
 	return u.Message(true, "Requirement passed"), true
 }
 
-func (account *Student) Create() map[string] interface{} {
+func (account *Student) Create() map[string]interface{} {
 	if resp, ok := account.Validate(); !ok {
 		return resp
 	}
@@ -66,7 +68,7 @@ func (account *Student) Create() map[string] interface{} {
 	}
 
 	// Create new JWT Token for the newly registered account
-	tk := &Token{UserId:account.ID}
+	tk := &Token{UserId: account.ID}
 	token := jwt.NewWithClaims(jwt.GetSigningMethod("HS256"), tk)
 	tokenString, _ := token.SignedString([]byte(os.Getenv("token_password")))
 	account.Token = tokenString
@@ -77,16 +79,16 @@ func (account *Student) Create() map[string] interface{} {
 	return response
 }
 
-func DeleteAccount(user uint) map[string] interface{} {
-	account := Student{ID:user}
+func DeleteAccount(user uint) map[string]interface{} {
+	account := Student{ID: user}
 	GetDB().Delete(&account)
 	// Call delete
 	response := u.Message(true, "Student has been deleted")
 	return response
 }
 
-func GetProfile(user uint) map[string] interface{} {
-	account := Student{ID:user}
+func GetProfile(user uint) map[string]interface{} {
+	account := Student{ID: user}
 	GetDB().First(&account)
 	response := u.Message(true, "")
 	account.Password = ""
@@ -94,7 +96,7 @@ func GetProfile(user uint) map[string] interface{} {
 	return response
 }
 
-func (account *Student) Update(firstName, lastName string) map[string] interface{} {
+func (account *Student) Update(firstName, lastName string) map[string]interface{} {
 	GetDB().First(&account)
 	account.FirstName = firstName
 	account.LastName = lastName
@@ -105,7 +107,7 @@ func (account *Student) Update(firstName, lastName string) map[string] interface
 	return response
 }
 
-func Login(email, password string) (map[string] interface{}) {
+func Login(email, password string) map[string]interface{} {
 	account := &Student{}
 	err := GetDB().Table("student").Where("uname = ?", email).First(account).Error
 	if err != nil {
